@@ -14,7 +14,6 @@ main() {
 class ExpensesApp extends StatelessWidget {
   const ExpensesApp({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -163,6 +162,8 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
   ];
 
+  bool _showChart = false;
+
   _removeTransaction(String id) {
     setState(() {
       _transactions.removeWhere((tr) => tr.id == id);
@@ -202,6 +203,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    bool isLandscape = width > 767
+        ? false
+        : MediaQuery.of(context).orientation == Orientation.landscape;
+
     final appBar = AppBar(
       title: const Text('Despesas Pessoais'),
       actions: [
@@ -211,7 +217,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ],
     );
 
-    final availabelHeight = MediaQuery.of(context).size.height -
+    final availableHeight = MediaQuery.of(context).size.height -
         appBar.preferredSize.height -
         MediaQuery.of(context).padding.top;
 
@@ -221,16 +227,33 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              SizedBox(
-                height: availabelHeight * 0.3,
-                child: Chart(_recentTransactions),
-              ),
-              SizedBox(
-                  height: availabelHeight * 0.7,
-                  child: TransactionList(
-                    _transactions,
-                    _removeTransaction,
-                  )),
+              if (isLandscape)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Exibir Gráfico'),
+                    Switch(
+                      value: _showChart,
+                      onChanged: (value) {
+                        setState(() {
+                          _showChart = value;
+                        });                        
+                      },
+                    ),
+                  ],
+                ),
+              if (_showChart || !isLandscape)
+                SizedBox(
+                  height: availableHeight * 0.3,
+                  child: Chart(_recentTransactions),
+                ),
+              if (!_showChart || !isLandscape)
+                SizedBox(
+                    height: availableHeight * 0.7,
+                    child: TransactionList(
+                      _transactions,
+                      _removeTransaction,
+                    )),
             ]),
       ),
       floatingActionButton: FloatingActionButton(

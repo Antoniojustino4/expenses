@@ -1,5 +1,5 @@
 expenses
-2.15
+2.12
 file:///C:/Users/anton/%C3%81rea%20de%20Trabalho/Cursos/flutter/expenses/
 file:///C:/Users/anton/%C3%81rea%20de%20Trabalho/Cursos/flutter/expenses/lib/
 async
@@ -38,6 +38,10 @@ flutter_lints
 2.12
 file:///C:/development/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_lints-1.0.4/
 file:///C:/development/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_lints-1.0.4/lib/
+intl
+2.12
+file:///C:/development/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0/
+file:///C:/development/flutter/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0/lib/
 lints
 2.12
 file:///C:/development/flutter/.pub-cache/hosted/pub.dartlang.org/lints-1.0.1/
