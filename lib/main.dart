@@ -161,6 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
       date: DateTime.now().subtract(const Duration(days: 5)),
     ),
   ];
+    
 
   bool _showChart = false;
 
@@ -211,6 +212,14 @@ class _MyHomePageState extends State<MyHomePage> {
     final appBar = AppBar(
       title: const Text('Despesas Pessoais'),
       actions: [
+        if(isLandscape)
+          IconButton(
+            icon: Icon(_showChart ? Icons.list : Icons.show_chart),
+            onPressed: (){
+            setState(() {
+              _showChart = !_showChart;
+            });
+          }),
         IconButton(
             onPressed: () => _openTransactionFormModal(context),
             icon: const Icon(Icons.add))
@@ -227,24 +236,24 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              if (isLandscape)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Exibir Gráfico'),
-                    Switch(
-                      value: _showChart,
-                      onChanged: (value) {
-                        setState(() {
-                          _showChart = value;
-                        });                        
-                      },
-                    ),
-                  ],
-                ),
+              // if (isLandscape)
+              //   Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: [
+              //       const Text('Exibir Gráfico'),
+              //       Switch(
+              //         value: _showChart,
+              //         onChanged: (value) {
+              //           setState(() {
+              //             _showChart = value;
+              //           });                        
+              //         },
+              //       ),
+              //     ],
+              //   ),
               if (_showChart || !isLandscape)
                 SizedBox(
-                  height: availableHeight * 0.3,
+                  height: availableHeight * (isLandscape ? 0.7: 0.3),
                   child: Chart(_recentTransactions),
                 ),
               if (!_showChart || !isLandscape)
