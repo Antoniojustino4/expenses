@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 
 import 'package:expenses/components/chart.dart';
 import 'package:expenses/components/transaction_form.dart';
@@ -161,7 +163,6 @@ class _MyHomePageState extends State<MyHomePage> {
       date: DateTime.now().subtract(const Duration(days: 5)),
     ),
   ];
-    
 
   bool _showChart = false;
 
@@ -204,31 +205,31 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    bool isLandscape = width > 767
-        ? false
-        : MediaQuery.of(context).orientation == Orientation.landscape;
+    final mediaQuery = MediaQuery.of(context);
+    double width = mediaQuery.size.width;
+    bool isLandscape =
+        width > 767 ? false : mediaQuery.orientation == Orientation.landscape;
 
     final appBar = AppBar(
       title: const Text('Despesas Pessoais'),
       actions: [
-        if(isLandscape)
+        if (isLandscape)
           IconButton(
-            icon: Icon(_showChart ? Icons.list : Icons.show_chart),
-            onPressed: (){
-            setState(() {
-              _showChart = !_showChart;
-            });
-          }),
+              icon: Icon(_showChart ? Icons.list : Icons.show_chart),
+              onPressed: () {
+                setState(() {
+                  _showChart = !_showChart;
+                });
+              }),
         IconButton(
             onPressed: () => _openTransactionFormModal(context),
             icon: const Icon(Icons.add))
       ],
     );
 
-    final availableHeight = MediaQuery.of(context).size.height -
+    final availableHeight = mediaQuery.size.height -
         appBar.preferredSize.height -
-        MediaQuery.of(context).padding.top;
+        mediaQuery.padding.top;
 
     return Scaffold(
       appBar: appBar,
@@ -236,39 +237,42 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              // if (isLandscape)
-              //   Row(
-              //     mainAxisAlignment: MainAxisAlignment.center,
-              //     children: [
-              //       const Text('Exibir Gráfico'),
-              //       Switch(
-              //         value: _showChart,
-              //         onChanged: (value) {
-              //           setState(() {
-              //             _showChart = value;
-              //           });                        
-              //         },
-              //       ),
-              //     ],
-              //   ),
+              if (isLandscape)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Exibir Gráfico'),
+                    Switch.adaptive(
+                      activeColor: Theme.of(context).colorScheme.secondary,
+                      value: _showChart,
+                      onChanged: (value) {
+                        setState(() {
+                          _showChart = value;
+                        });
+                      },
+                    ),
+                  ],
+                ),
               if (_showChart || !isLandscape)
                 SizedBox(
-                  height: availableHeight * (isLandscape ? 0.7: 0.3),
+                  height: availableHeight * (isLandscape ? 0.8 : 0.3),
                   child: Chart(_recentTransactions),
                 ),
               if (!_showChart || !isLandscape)
                 SizedBox(
-                    height: availableHeight * 0.7,
+                    height: availableHeight * (isLandscape ? 1 : 0.7),
                     child: TransactionList(
                       _transactions,
                       _removeTransaction,
                     )),
             ]),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () => _openTransactionFormModal(context),
-      ),
+      floatingActionButton: defaultTargetPlatform == TargetPlatform.android
+          ? Container()
+          : FloatingActionButton(
+              child: const Icon(Icons.add),
+              onPressed: () => _openTransactionFormModal(context),
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
