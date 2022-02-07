@@ -1,10 +1,9 @@
 import 'dart:math';
-import 'dart:io';
-import 'package:flutter/foundation.dart';
 
 import 'package:expenses/components/chart.dart';
 import 'package:expenses/components/transaction_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'components/transaction_list.dart';
 import 'models/transaction.dart';
@@ -243,7 +242,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     const Text('Exibir Gráfico'),
                     Switch.adaptive(
-                      activeColor: Theme.of(context).colorScheme.secondary,
+                      // // ignore: deprecated_member_use
+                      // activeColor: Theme.of(context).accentColor,
+                      activeColor: Theme.of(context).errorColor,
                       value: _showChart,
                       onChanged: (value) {
                         setState(() {
@@ -267,7 +268,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     )),
             ]),
       ),
-      floatingActionButton: defaultTargetPlatform == TargetPlatform.android
+      floatingActionButton: Theme.of(context).platform == TargetPlatform.iOS
           ? Container()
           : FloatingActionButton(
               child: const Icon(Icons.add),
