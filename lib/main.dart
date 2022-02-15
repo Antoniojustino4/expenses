@@ -217,9 +217,12 @@ class _MyHomePageState extends State<MyHomePage> {
     bool isLandscape =
         width > 767 ? false : mediaQuery.orientation == Orientation.landscape;
 
+    final iconList = Platform.isIOS ? CupertinoIcons.refresh : Icons.list;
+    final chartList = Platform.isIOS ? CupertinoIcons.refresh : Icons.show_chart;
+
     final actions = [
       if (isLandscape)
-        _getIconButton(_showChart ? Icons.list : Icons.show_chart, 
+        _getIconButton(_showChart ? iconList : chartList, 
         () {
           setState(() {
             _showChart = !_showChart;
@@ -230,24 +233,25 @@ class _MyHomePageState extends State<MyHomePage> {
       () => _openTransactionFormModal(context),
     ];
 
-    final PreferredSizeWidget appBar = Platform.isIOS
-        ? CupertinoNavigationBar(
-            middle: Text('Despesas Pessoais'),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: actions,
-            ),
-          )
-        : AppBar(
-            title: const Text('Despesas Pessoais'),
-            actions: actions,
-          );
+    final PreferredSizeWidget appBar = 
+        // Platform.isIOS
+        //  ? CupertinoNavigationBar(
+        //      middle: const Text('Despesas Pessoais'),
+        //     trailing: Row(
+        //        mainAxisSize: MainAxisSize.min,
+        //        children: actions,
+        //      ),
+        //    ):
+         AppBar(
+             title: const Text('Despesas Pessoais'),
+             actions: actions,
+           );
 
     final availableHeight = mediaQuery.size.height -
         appBar.preferredSize.height -
         mediaQuery.padding.top;
 
-    var bodyPage = SingleChildScrollView(
+    var bodyPage = SafeArea(child: SingleChildScrollView(
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -281,7 +285,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   _transactions,
                   _removeTransaction,
                 )),
-        ]));
+        ])));
 
     return Platform.isIOS
         ? CupertinoPageScaffold(
