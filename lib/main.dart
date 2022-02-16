@@ -218,22 +218,23 @@ class _MyHomePageState extends State<MyHomePage> {
         width > 767 ? false : mediaQuery.orientation == Orientation.landscape;
 
     final iconList = Platform.isIOS ? CupertinoIcons.refresh : Icons.list;
-    final chartList = Platform.isIOS ? CupertinoIcons.refresh : Icons.show_chart;
+    final chartList =
+        Platform.isIOS ? CupertinoIcons.refresh : Icons.show_chart;
 
     final actions = [
       if (isLandscape)
-        _getIconButton(_showChart ? iconList : chartList, 
-        () {
+        _getIconButton(_showChart ? iconList : chartList, () {
           setState(() {
             _showChart = !_showChart;
           });
         }),
       _getIconButton(
-        Platform.isIOS ? CupertinoIcons.add :Icons.add,
-      () => _openTransactionFormModal(context),
+        Platform.isIOS ? CupertinoIcons.add : Icons.add,
+        () => _openTransactionFormModal(context),
+      )
     ];
 
-    final PreferredSizeWidget appBar = 
+    final PreferredSizeWidget appBar =
         // Platform.isIOS
         //  ? CupertinoNavigationBar(
         //      middle: const Text('Despesas Pessoais'),
@@ -242,19 +243,20 @@ class _MyHomePageState extends State<MyHomePage> {
         //        children: actions,
         //      ),
         //    ):
-         AppBar(
-             title: const Text('Despesas Pessoais'),
-             actions: actions,
-           );
+        AppBar(
+      title: const Text('Despesas Pessoais'),
+      actions: actions,
+    );
 
     final availableHeight = mediaQuery.size.height -
         appBar.preferredSize.height -
         mediaQuery.padding.top;
 
-    var bodyPage = SafeArea(child: SingleChildScrollView(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
+    var bodyPage = SafeArea(
+        child: SingleChildScrollView(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
           if (isLandscape)
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
