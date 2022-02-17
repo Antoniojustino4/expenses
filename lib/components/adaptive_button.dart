@@ -7,7 +7,7 @@ class AdaptativeButton extends StatelessWidget {
   final Function onPressed;
 
   const AdaptativeButton(
-      {Key? key, required this.label, required this.onPressed})
+      {required this.label, required this.onPressed, Key? key})
       : super(key: key);
 
   @override

@@ -1,5 +1,6 @@
+import 'package:expenses/components/adaptive_date_picker.dart';
+import 'package:expenses/components/adaptive_text_field.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
   const TransactionForm(this.onSubmit, {Key? key}) : super(key: key);
@@ -26,21 +27,6 @@ class _TransactionFormState extends State<TransactionForm> {
     widget.onSubmit(title, value, _selectedDate);
   }
 
-  _showDatePicker() {
-    showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2019),
-            lastDate: DateTime.now())
-        .then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-
-      _selectedDate = pickedDate;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -55,47 +41,24 @@ class _TransactionFormState extends State<TransactionForm> {
           ),
           child: Column(
             children: <Widget>[
-              TextField(
+              AdaptativeTextField(
                 controller: titleController,
                 onSubmitted: (_) => _submitForm(),
-                decoration: const InputDecoration(
-                  labelText: 'Título',
-                ),
+                label: 'Título',
               ),
-              TextField(
-                  controller: valueController,
-                  keyboardType: TextInputType.number,
-                  onSubmitted: (_) => _submitForm(),
-                  decoration: const InputDecoration(
-                    labelText: 'Valor (R\$)',
-                  )),
-              SizedBox(
-                height: 70,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        // ignore: unnecessary_null_comparison
-                        _selectedDate == null
-                            ? 'Nenhuma data selecionada!'
-                            : 'Data Selecionada: ${DateFormat('dd/MM/y').format(_selectedDate)}',
-                      ),
-                    ),
-                    TextButton(
-                      style: ElevatedButton.styleFrom(
-                        onPrimary: Theme.of(context).primaryColor,
-                      ),
-                      child: const Text(
-                        'Selecionar Data',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      onPressed: _showDatePicker,
-                    )
-                  ],
-                ),
+              AdaptativeTextField(
+                controller: valueController,
+                keyboardType: TextInputType.number,
+                onSubmitted: (_) => _submitForm(),
+                label: 'Valor (R\$)',
               ),
+              AdaptativeDatePicker(
+                  selectedDate: _selectedDate,
+                  onDateChanged: (newDate) {
+                    setState(() {
+                      _selectedDate = newDate;
+                    });
+                  }),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[

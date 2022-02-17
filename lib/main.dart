@@ -234,7 +234,7 @@ class _MyHomePageState extends State<MyHomePage> {
       )
     ];
 
-    final PreferredSizeWidget appBar =
+    final appBar =
         // Platform.isIOS
         //  ? CupertinoNavigationBar(
         //      middle: const Text('Despesas Pessoais'),
@@ -292,7 +292,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Platform.isIOS
         ? CupertinoPageScaffold(
             child: bodyPage,
-            navigationBar: appBar,
+            //navigationBar: appBar,
           )
         : Scaffold(
             appBar: appBar,
